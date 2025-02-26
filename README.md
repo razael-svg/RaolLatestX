@@ -1,4 +1,3 @@
-## ✨ RaolLatestX
 ![RaolLatestX](https://cardivo.vercel.app/api?name=RaolLatestX&description=🎁Base%20WhatsApp%20bot%20type%20case%20and%20plugins%20(cjs)&image=https://files.catbox.moe/j7k8st.jpg&backgroundColor=%23ecf0f1&github=latesturl&pattern=leaf&colorPattern=%23eaeaea)
 
 #### **1. Login Required:**
