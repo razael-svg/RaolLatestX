@@ -51,4 +51,7 @@ global.yt = ''; // A placeholder for a YouTube link or channel.
 [Fauzialifatah](https://github.com/Alifatahfauzi/) | [Raol Mukarrozi](https://github.com/latesturl/)  
 Owner | Recode
 
+#### **Source Login Required:**
+[![DBRaolLatestX](https://github-readme-stats.vercel.app/api/pin/?username=latesturl&repo=DBRaolLatestX&show_owner=true&theme=dark)](https://github.com/latesturl/dbRaolLatestX)
+
 **© 2025 LatestURL. All rights reserved**
