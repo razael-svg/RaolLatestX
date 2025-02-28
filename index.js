@@ -18,6 +18,10 @@ const {
     getAggregateVotesInPollMessage
 } = require("@whiskeysockets/baileys");
 
+//================= { DISCORD } =================\\
+/*
+require('./src/discord');
+*/
 //================= { LIBRARY } =================\\
 const fs = require('fs');
 const pino = require('pino');
@@ -808,8 +812,8 @@ async function RaolLatestXStart() {
 
     return RaolLatestX
 }
-
-RaolLatestXStart()
+//================= { WHATSAPP START } =================\\
+RaolLatestXStart();
 
 let file = require.resolve(__filename);
 fs.watchFile(file, () => {
