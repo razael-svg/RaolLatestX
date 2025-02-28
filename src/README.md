@@ -1,6 +1,6 @@
 ### Announcement✨
 ---
 #### **INDONESIA:**
-***jangan lupa fork github repository😜 agar mendapatkan notif update lebih lanjut***
-### **ENGLISH:**
-***don't forget to fork the github repository😜 to get further update notifications***
+***saya raol mukarrozi akan terus me update fitur bot discord ini mungkin juga bakal menambahkan agar support bot telegram😉***
+#### **ENGLISH:**
+***I, Raol Mukarrozi, will continue to update the Discord bot feature, maybe I will also add support for Telegram bots😉***
