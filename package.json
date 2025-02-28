@@ -27,6 +27,7 @@
         "child_process": "^1.0.2",
         "clui": "^0.3.6",
         "crypto": "^1.0.1",
+        "discord.js": "^14.13.0",
         "figlet": "latest",
         "file-type": "^16.5.3",
         "fluent-ffmpeg": "^2.1.2",
