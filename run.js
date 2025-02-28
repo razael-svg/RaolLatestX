@@ -166,36 +166,56 @@ const userPrem = JSON.parse(fs.readFileSync('./lib/database/userPremium.json'))
 //================= { BASE } =================\\
 module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
     try {
-        var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectReply.selectedRowId : (m.mtype == 'templateButtonReplyMessage') ? m.message.templateButtonReplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply.selectedRowId || m.text) : ''
-        var budy = (typeof m.text == 'string' ? m.text : '')
-        var prefix = prefa ? /^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi.test(body) ? body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)[0] : "" : prefa ?? global.prefix
-        const isUser = pendaftar.includes(m.sender)
-        const isCmd = body.startsWith(prefix)
-        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
-        const args = body.trim().split(/ +/).slice(1)
-        const pushname = m.pushName || "No Name"
-        const text = q = args.join(" ")
-        const fatkuns = (m.quoted || m)
-        const quoted = (fatkuns.mtype == 'buttonsMessage') ? fatkuns[Object.keys(fatkuns)[1]] : (fatkuns.mtype == 'templateMessage') ? fatkuns.hydratedTemplate[Object.keys(fatkuns.hydratedTemplate)[1]] : (fatkuns.mtype == 'product') ? fatkuns[Object.keys(fatkuns)[0]] : m.quoted ? m.quoted : m
-        const mime = (quoted.msg || quoted).mimetype || ''
-        const qmsg = (quoted.msg || quoted)
-        const isMedia = /image|video|sticker|audio/.test(mime)
+        var body = (
+            (m.mtype === 'conversation') ? m.message?.conversation :
+            (m.mtype === 'imageMessage') ? m.message?.imageMessage?.caption :
+            (m.mtype === 'videoMessage') ? m.message?.videoMessage?.caption :
+            (m.mtype === 'extendedTextMessage') ? m.message?.extendedTextMessage?.text :
+            (m.mtype === 'buttonsResponseMessage') ? m.message?.buttonsResponseMessage?.selectedButtonId :
+            (m.mtype === 'listResponseMessage') ? m.message?.listResponseMessage?.singleSelectReply?.selectedRowId :
+            (m.mtype === 'templateButtonReplyMessage') ? m.message?.templateButtonReplyMessage?.selectedId :
+            (m.mtype === 'messageContextInfo') ? (
+                m.message?.buttonsResponseMessage?.selectedButtonId ||
+                m.message?.listResponseMessage?.singleSelectReply?.selectedRowId ||
+                m.text
+            ) : ''
+        ) || '';
+        var budy = (typeof m.text === 'string' ? m.text : '');
+        var prefix = prefa ? 
+            (body.match(/^[°•π÷×¶∆£¢€¥®™+✓_=|~!?@#$%^&.©^]/gi)?.[0] || "") 
+            : prefa ?? global.prefix;
+        const isUser = pendaftar.includes(m.sender);
+        const isCmd = typeof body === 'string' && body.startsWith(prefix);
+        const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase();
+        const args = body.trim().split(/ +/).slice(1);
+        const pushname = m.pushName || "No Name";
+        const text = q = args.join(" ");
+        const fatkuns = (m.quoted || m);
+        const quoted = (fatkuns.mtype === 'buttonsMessage') ? fatkuns[Object.keys(fatkuns)[1]] : 
+            (fatkuns.mtype === 'templateMessage') ? fatkuns.hydratedTemplate[Object.keys(fatkuns.hydratedTemplate)[1]] : 
+            (fatkuns.mtype === 'product') ? fatkuns[Object.keys(fatkuns)[0]] : 
+            m.quoted ? m.quoted : m;
+        const mime = (quoted.msg || quoted).mimetype || '';
+        const qmsg = (quoted.msg || quoted);
+        const isMedia = /image|video|sticker|audio/.test(mime);
+
         //================= { USER } =================\\
-        var isAuthor = global.ownNumb.replace(/[^0-9]/g, '').includes(m.sender.split("@")[0])
-        const botNumber = await RaolLatestX.decodeJid(RaolLatestX.user.id)
-        const globalelit = `${global.ownNumb}@s.whatsapp.net`
-        const isOwner = globalelit.includes(m.sender)
-        const itsMe = m.sender == botNumber ? true : false
-        const isCreator = [botNumber, ...global.ownNumb].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+        var isAuthor = global.ownNumb.replace(/[^0-9]/g, '').includes(m.sender.split("@")[0]);
+        const botNumber = await RaolLatestX.decodeJid(RaolLatestX.user.id);
+        const globalelit = `${global.ownNumb}@s.whatsapp.net`;
+        const isOwner = globalelit.includes(m.sender);
+        const itsMe = m.sender === botNumber ? true : false;
+        const isCreator = [botNumber, ...global.ownNumb].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender);
+
         //================= { GROUP } =================\\
-        const groupMetadata = m.isGroup ? await RaolLatestX.groupMetadata(m.chat).catch(e => {}) : ''
-        const groupName = m.isGroup ? groupMetadata.subject : ''
-        const participants = m.isGroup ? await groupMetadata.participants : ''
-        const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
-        const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
-        const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
-        const groupOwner = m.isGroup ? groupMetadata.owner : ''
-        const isGroupOwner = m.isGroup ? (groupOwner ? groupOwner : groupAdmins).includes(m.sender) : false
+        const groupMetadata = m.isGroup ? await RaolLatestX.groupMetadata(m.chat).catch(() => null) : null;
+        const groupName = groupMetadata?.subject || '';
+        const participants = m.isGroup ? (groupMetadata?.participants || []) : [];
+        const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : '';
+        const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false;
+        const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false;
+        const groupOwner = m.isGroup ? groupMetadata?.owner : '';
+        const isGroupOwner = m.isGroup ? (groupOwner ? groupOwner : groupAdmins).includes(m.sender) : false;
         //================= { ACCESS } =================\\
 
         //================= { REACT } =================\\
