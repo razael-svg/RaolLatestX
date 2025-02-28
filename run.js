@@ -647,7 +647,7 @@ case 'addprem': {
         RaolLatestX.sendMessage(args[0] + "@s.whatsapp.net", {
             text: `You are now a Premium Member`
         }, {
-            quoted: tes
+            quoted: m
         });
     }
     break;
@@ -675,7 +675,7 @@ case 'delprem': {
             RaolLatestX.sendMessage(targetNumber, {
                 text: `Your Premium Status Has Expired/Been Revoked`
             }, {
-                quoted: tes
+                quoted: m
             });
         } else {
             reply("Premium entity not found");
