@@ -13,7 +13,7 @@ global.sessionName = "session";
 global.namabot = "RaolLatestX";
 global.author = "Razael";
 global.packname = "RaolLatestX";
-global.yt = "";
+global.yt = "https://youtube.com/@windahbasudara?si=-ZDO__QT3S8ekNHO";
 
 //================= { MASSAGE } =================\\
 global.mess = {
