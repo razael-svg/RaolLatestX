@@ -259,7 +259,7 @@ module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
         try {
             ppuser = await RaolLatestX.profilePictureUrl(m.sender, 'image')
         } catch (err) {
-            ppuser = 'https://cdn.arifzyn.site/f/sy6tjbzk.jpg'
+            ppuser = 'https://raw.githubusercontent.com/latesturl/dbCDN/refs/heads/main/my-DB/profile.jpg'
         }
         ppnyauser = await getBuffer(ppuser)
 
@@ -434,7 +434,7 @@ module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
                         "name": "RaolLatestX"
                     },
                     "joinLink": "https://call.whatsapp.com/video/hMwVijMQtUb0qBJL3lf0rv",
-                    "startTime": "1713724680"
+                    "startTime": "12345678"
                 }
             }
         }
@@ -444,7 +444,8 @@ module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
         const example = (teks) => {
             return `\n *Usage Examples:*\n Type *${prefix+command}* ${teks}\n`
         }
-
+        
+        /*
         const reply = (teks) => {
             RaolLatestX.sendMessage(m.chat, {
                 text: teks
@@ -452,32 +453,33 @@ module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
                 quoted: m
             })
         }
-        /*
+        */
+        
         const reply = async (teks) => {
         const RaolLatestXJob = {
         contextInfo: {
         forwardingScore: 999,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-        newsletterName: ``,
-        newsletterJid: ``,
+        newsletterName: `#RaolLatestX`,
+        newsletterJid: `120363378800202820@newsletter`,
         },
         externalAdReply: {
         showAdAttribution: true,
-        title: ``, 
+        title: `#RaolLatestX`, 
         body: `${ucapanWaktu}`, 
-        thumbnailUrl: ``, 
+        thumbnailUrl: `https://raw.githubusercontent.com/latesturl/dbCDN/refs/heads/main/my-DB/profile.jpg`,
         thumbnail: '',
-        sourceUrl: '', 
+        sourceUrl: 'https://whatsapp.com/channel/0029VazeUE92Jl8KuVcHIC46', 
         },
         },
         text: teks, 
         };
         return RaolLatestX.sendMessage(m.chat, RaolLatestXJob, {
-        quoted: ftroli, ephemeralExpiration: 86400,
+        quoted: ftroli, ephemeralExpiration: 999,
         });
         };
-        */
+        
 
         //================= { PLUGINS } =================\\
         const pluginsLoader = async (directory) => {
@@ -595,7 +597,8 @@ module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
 
 //================= { SWITCH CASE } =================\\
 switch (command) {
-//================= { SWITCH CADE } =================\\
+//================= { MAIN COURSE } =================\\
+
 
 //================= { MENU } =================\\
 
@@ -604,8 +607,7 @@ switch (command) {
 //================= { MENU } =================\\
 
 //================= { MENU } =================\\
-
-//================= { MENU } =================\\
+/*
 case 'public': {
     if (!isOwner) return;
     RaolLatestX.sendMessage(m.chat, {
@@ -631,59 +633,7 @@ case 'self': {
     m.reply('succes');
     break;
 }
-
-//================= { MENU } =================\\
-case 'addprem': {
-    if (args.length < 2) return reply(`*Example:* ${prefix + command} @tag 30d`);
-    if (m.mentionedJid.length !== 0) {
-        for (let i = 0; i < m.mentionedJid.length; i++) {
-            addPremiumUser(m.mentionedJid[0], args[1], userPrem);
-        }
-        reply("Premium Success");
-    } else {
-        addPremiumUser(args[0] + "@s.whatsapp.net", args[1], userPrem);
-        reply("Success Via Number");
-        await sleep(2000);
-        RaolLatestX.sendMessage(args[0] + "@s.whatsapp.net", {
-            text: `You are now a Premium Member`
-        }, {
-            quoted: m
-        });
-    }
-    break;
-}
-
-case 'delprem': {
-    if (args.length < 1) return reply(`*Example:* ${prefix + command} @tag`);
-    if (m.mentionedJid.length !== 0) {
-        for (let i = 0; i < m.mentionedJid.length; i++) {
-            let mentionedPremiumIndex = userPrem.findIndex(premium => premium.id === m.mentionedJid[i]);
-            if (mentionedPremiumIndex !== -1) {
-                userPrem.splice(mentionedPremiumIndex, 1);
-            }
-        }
-        fs.writeFileSync("./lib/database/userPremium.json", JSON.stringify(userPrem));
-        reply("Delete Success");
-    } else {
-        let targetNumber = args[0] + "@s.whatsapp.net";
-        let targetPremiumIndex = userPrem.findIndex(premium => premium.id === targetNumber);
-        if (targetPremiumIndex !== -1) {
-            userPrem.splice(targetPremiumIndex, 1);
-            fs.writeFileSync("./lib/database/userPremium.json", JSON.stringify(userPrem));
-            reply("Success Via Number");
-            await sleep(2000);
-            RaolLatestX.sendMessage(targetNumber, {
-                text: `Your Premium Status Has Expired/Been Revoked`
-            }, {
-                quoted: m
-            });
-        } else {
-            reply("Premium entity not found");
-        }
-    }
-    break;
-}
-
+*/
 //================= { WARNING } =================\\
     default:
         if (budy.startsWith('=>')) {
