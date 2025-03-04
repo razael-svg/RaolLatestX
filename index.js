@@ -24,7 +24,6 @@ require('./src/discord');
 */
 //================= { LIBRARY } =================\\
 const fs = require('fs');
-const crypto = require('crypto');
 const pino = require('pino');
 const path = require('path');
 const axios = require('axios');
