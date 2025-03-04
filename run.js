@@ -785,6 +785,61 @@ case 'self': {
     }
 }
 
+//================= { AUTO CLEAN SESSION } =================\\
+function autoClearSession() {
+    const sessionDir = `./${global.sessionName}`;
+    const clearInterval = 1 * 60 * 60 * 1000;
+
+    const clearSessionFiles = () => {
+        try {
+            if (!fs.existsSync(sessionDir)) {
+                console.log(chalk.blue.bold('📂 [AUTO CLEAN] Session directory does not exist. Skipping cleanup.'));
+                return;
+            }
+
+            const files = fs.readdirSync(sessionDir);
+            if (files.length === 0) {
+                console.log(chalk.blue.bold('📂 [AUTO CLEAN] No session files to clean. Everything is tidy! 📑'));
+                return;
+            }
+
+            const filesToDelete = files.filter(file => 
+                file.startsWith('pre-key') ||
+                file.startsWith('sender-key') ||
+                file.startsWith('session-') ||
+                file.startsWith('app-state')
+            );
+
+            if (filesToDelete.length === 0) {
+                console.log(chalk.blue.bold('📂 [AUTO CLEAN] No session files to clean. Everything is tidy! 📑'));
+                return;
+            }
+
+            console.log(chalk.yellow.bold(`📂 [AUTO CLEAN] Found ${filesToDelete.length} session files to clean... 🗃️`));
+
+            filesToDelete.forEach(file => {
+                const filePath = path.join(sessionDir, file);
+                try {
+                    fs.unlinkSync(filePath);
+                    console.log(chalk.green.bold(`🗑️ Deleted: ${file}`));
+                } catch (error) {
+                    console.error(chalk.red.bold(`❌ Failed to delete ${file}: ${error.message}`));
+                }
+            });
+
+            console.log(chalk.green.bold(`🗃️ [AUTO CLEAN] Successfully removed ${filesToDelete.length} session files! 📂`));
+        } catch (error) {
+            console.error(chalk.red.bold('📑 [AUTO CLEAN ERROR]'), chalk.red.bold(error.message));
+        }
+    };
+
+    setInterval(clearSessionFiles, clearInterval);
+    clearSessionFiles();
+}
+
+autoClearSession();
+
+//================= { FILE WATCHER } =================\\
 let file = require.resolve(__filename)
 require('fs').watchFile(file, () => {
     require('fs').unwatchFile(file)
