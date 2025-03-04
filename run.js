@@ -1,6 +1,6 @@
 //================= { MODULE } =================\\
-require('./tmp/helpers/commandMenu')
-require('./settings')
+require('./tmp/helpers/commandMenu');
+require('./settings');
 const {
     smsg,
     getGroupAdmins,
@@ -28,8 +28,9 @@ const {
     getRandom,
     pickRandom,
     reSize
-} = require('./lib/myfunction')
-//================= { MODULE } =================\\
+} = require('./lib/myfunction');
+
+//================= { PREMIUM MODULE } =================\\
 const {
     addPremiumUser,
     getPremiumExpired,
@@ -37,8 +38,9 @@ const {
     expiredCheck,
     checkPremiumUser,
     getAllPremiumUser
-} = require('./lib/premium')
-//================= { MODULE } =================\\
+} = require('./lib/premium');
+
+//================= { BAILEYS MODULE } =================\\
 const {
     makeWASocket,
     downloadContentFromMessage,
@@ -108,7 +110,7 @@ const {
     fetchLatestBaileysVersion,
     useMultiFileAuthState,
     templateMessage
-} = require('@whiskeysockets/baileys')
+} = require('@whiskeysockets/baileys');
 //================= { MODULE } =================\\
 const axios = require('axios')
 const os = require('os')
@@ -598,16 +600,116 @@ module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
 //================= { SWITCH CASE } =================\\
 switch (command) {
 //================= { MAIN COURSE } =================\\
-
-
-//================= { MENU } =================\\
-
-//================= { MENU } =================\\
-
-//================= { MENU } =================\\
-
-//================= { MENU } =================\\
 /*
+case "menu":
+case "help": {
+    RaolLatestX.sendMessage(m.chat, { react: { text: `${randomemoji}`, key: m.key } });
+    const owned = global.ownNumb + "@s.whatsapp.net";
+
+    const nodeVersion = process.version;
+    const packageJson = require('./package.json');
+    const baileysVersion = packageJson.dependencies['@whiskeysockets/baileys'] || packageJson.devDependencies['@whiskeysockets/baileys'];
+    const botStatus = RaolLatestX.public ? 'Public' : 'Self';
+
+    await RaolLatestX.sendMessage(m.chat, {
+        image: { url: 'https://raw.githubusercontent.com/latesturl/dbCDN/refs/heads/main/my-DB/menuV3.jpg' },
+        caption: `Hello *${pushname}*, this is the bot menu!\n\n` +
+                 `─ Time: *${ucapanWaktu}*\n` +
+                 `─ Runtime: *${runtime(process.uptime())}*\n` +
+                 `─ Node.js: *${nodeVersion}*\n` +
+                 `─ Baileys: *${baileysVersion}*\n` +
+                 `─ Status: *${botStatus}*`,
+        footer: `Powered by LatestURL`,
+        contextInfo: {
+            mentionedJid: [m.sender, owned],
+            forwardingScore: 20,
+            isForwarded: true,
+            externalAdReply: {
+                showAdAttribution: true,
+                title: `RaolLatestX`,
+                body: "LatestX",
+                thumbnailUrl: 'https://raw.githubusercontent.com/latesturl/dbCDN/refs/heads/main/my-DB/menuV1.jpg',
+                sourceUrl: "https://whatsapp.com/channel/0029VazeUE92Jl8KuVcHIC46",
+                mediaType: 1,
+                renderLargerThumbnail: true
+            }
+        },
+        buttons: [
+            {
+                buttonId: '.public',
+                buttonText: { displayText: 'Public' },
+                type: 1
+            },
+            {
+                buttonId: '.self',
+                buttonText: { displayText: 'Self' },
+                type: 1
+            }
+        ],
+        headerType: 1,
+        viewOnce: true
+    }, { quoted: ftroli });
+}
+break;
+*/
+
+case "menu":
+case "help": {
+    RaolLatestX.sendMessage(m.chat, { react: { text: `${randomemoji}`, key: m.key } });
+    const owned = global.ownNumb + "@s.whatsapp.net";
+
+    const nodeVersion = process.version;
+    const packageJson = require('./package.json');
+    const baileysVersion = packageJson.dependencies['@whiskeysockets/baileys'] || packageJson.devDependencies['@whiskeysockets/baileys'];
+    const botStatus = RaolLatestX.public ? 'Public' : 'Self';
+
+    await RaolLatestX.sendMessage(m.chat, {
+        video: { url: 'https://cloudkuimages.xyz/uploads/videos/67c5be2b7b19d.mp4' },
+        gifPlayback: true,
+        caption: `Hello *${pushname}*, this is the bot menu!\n\n` +
+                 `─ Time: *${ucapanWaktu}*\n` +
+                 `─ Runtime: *${runtime(process.uptime())}*\n` +
+                 `─ Node.js: *${nodeVersion}*\n` +
+                 `─ Baileys: *${baileysVersion}*\n` +
+                 `─ Status: *${botStatus}*`,
+        footer: `Powered by LatestURL`,
+        contextInfo: {
+            mentionedJid: [m.sender, owned],
+            forwardingScore: 999,
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+                newsletterName: `#RaolLatestX`,
+                newsletterJid: `120363378800202820@newsletter`,
+            },
+        },
+        headerType: 1,
+        viewOnce: true
+    }, { quoted: ftroli });
+
+    await RaolLatestX.sendMessage(m.chat, {
+        audio: { url: 'https://cloudkuimages.xyz/uploads/audios/67c5c0cbc5fb9.mp3' },
+        ptt: true,
+        mimetype: 'audio/mpeg',
+        contextInfo: {
+            mentionedJid: [m.sender],
+            forwardingScore: 999,
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+                newsletterName: `#RaolLatestX`,
+                newsletterJid: `120363378800202820@newsletter`,
+            },
+        },
+    }, { quoted: ftroli });
+}
+break;
+//================= { MENU } =================\\
+
+//================= { MENU } =================\\
+
+//================= { MENU } =================\\
+
+//================= { OWNER MENU } =================\\
+
 case 'public': {
     if (!isOwner) return;
     RaolLatestX.sendMessage(m.chat, {
@@ -633,7 +735,7 @@ case 'self': {
     m.reply('succes');
     break;
 }
-*/
+
 //================= { WARNING } =================\\
     default:
         if (budy.startsWith('=>')) {
@@ -683,37 +785,56 @@ case 'self': {
     }
 }
 
-//================= { AUTO CLEAR SESSION } =================\\
+//================= { AUTO CLEAN SESSION } =================\\
 function autoClearSession() {
-    const sessionDir = './session';
-    const clearInterval = 4 * 60 * 60 * 1000;
-    
-    setInterval(async () => {
+    const sessionDir = `./${global.sessionName}`;
+    const clearInterval = 1 * 60 * 60 * 1000;
+
+    const clearSessionFiles = () => {
         try {
+            if (!fs.existsSync(sessionDir)) {
+                console.log(chalk.blue.bold('📂 [AUTO CLEAN] Session directory does not exist. Skipping cleanup.'));
+                return;
+            }
+
             const files = fs.readdirSync(sessionDir);
-            const filteredFiles = files.filter(file => 
+            if (files.length === 0) {
+                console.log(chalk.blue.bold('📂 [AUTO CLEAN] No session files to clean. Everything is tidy! 📑'));
+                return;
+            }
+
+            const filesToDelete = files.filter(file => 
                 file.startsWith('pre-key') ||
                 file.startsWith('sender-key') ||
                 file.startsWith('session-') ||
                 file.startsWith('app-state')
             );
 
-            if (filteredFiles.length === 0) {
+            if (filesToDelete.length === 0) {
                 console.log(chalk.blue.bold('📂 [AUTO CLEAN] No session files to clean. Everything is tidy! 📑'));
                 return;
             }
 
-            console.log(chalk.yellow.bold('📂 [AUTO CLEAN] Starting session cleanup... 🗃️'));
-            
-            filteredFiles.forEach(file => {
-                fs.unlinkSync(path.join(sessionDir, file));
+            console.log(chalk.yellow.bold(`📂 [AUTO CLEAN] Found ${filesToDelete.length} session files to clean... 🗃️`));
+
+            filesToDelete.forEach(file => {
+                const filePath = path.join(sessionDir, file);
+                try {
+                    fs.unlinkSync(filePath);
+                    console.log(chalk.green.bold(`🗑️ Deleted: ${file}`));
+                } catch (error) {
+                    console.error(chalk.red.bold(`❌ Failed to delete ${file}: ${error.message}`));
+                }
             });
 
-            console.log(chalk.green.bold(`🗃️ [AUTO CLEAN] Successfully removed ${filteredFiles.length} session files! 📂`));
+            console.log(chalk.green.bold(`🗃️ [AUTO CLEAN] Successfully removed ${filesToDelete.length} session files! 📂`));
         } catch (error) {
-            console.error(chalk.red.bold('📑 [AUTO CLEAN ERROR]'), chalk.red.bold(error));
+            console.error(chalk.red.bold('📑 [AUTO CLEAN ERROR]'), chalk.red.bold(error.message));
         }
-    }, clearInterval);
+    };
+
+    setInterval(clearSessionFiles, clearInterval);
+    clearSessionFiles();
 }
 
 autoClearSession();

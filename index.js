@@ -24,6 +24,7 @@ require('./src/discord');
 */
 //================= { LIBRARY } =================\\
 const fs = require('fs');
+const crypto = require('crypto');
 const pino = require('pino');
 const path = require('path');
 const axios = require('axios');
@@ -133,7 +134,6 @@ const randomcolor3 = listcolor[Math.floor(Math.random() * listcolor.length)];
 const randomcolor4 = listcolor[Math.floor(Math.random() * listcolor.length)];
 const randomcolor5 = listcolor[Math.floor(Math.random() * listcolor.length)];
 
-
 //================= { CONSOLE DISPLAY } =================\\
 const welcomeMessage = `
 👋 Hii, I Am ${global.namabot}
@@ -141,6 +141,7 @@ ${ucapanWaktu}
 Session        : ${global.sessionName}
 Waktu    : ${ucapanWaktu}
 `;
+
 //================= { PAIRING } =================\\
 async function keyoptions(url, options) {
     try {
@@ -243,48 +244,45 @@ async function handleLogin() {
 async function RaolLatestXStart() {
     const isLoggedIn = await handleLogin();
     if (!isLoggedIn) return;
-    
-    const {
-        state,
-        saveCreds
-    } = await useMultiFileAuthState(`./${global.sessionName}`);
+
+    const { state, saveCreds } = await useMultiFileAuthState(`./${global.sessionName}`);
 
     const RaolLatestX = makeWASocket({
         connectTimeoutMs: 60000,
         defaultQueryTimeoutMs: 0,
         keepAliveIntervalMs: 30000,
-        emitOwnEvents: true,
-        fireInitQueries: true,
-        generateHighQualityLinkPreview: true,
-        syncFullHistory: true,
-        markOnlineOnConnect: true,
+        emitOwnEvents: false,
+        fireInitQueries: false,
+        generateHighQualityLinkPreview: false,
+        syncFullHistory: false,
+        markOnlineOnConnect: false,
         logger: pino({ level: "silent" }),
         printQRInTerminal: !usePairingCode,
         auth: state,
         version: [2, 3000, 1017531287],
-        browser: ["Ubuntu", "Chrome", "20.0.04"]
+        browser: ["Ubuntu", "Firefox", "120.0"]
     });
 
     if (usePairingCode && !RaolLatestX.authState.creds.registered) {
-    try {
-        console.log(chalk.hex("#800080").bold("Enter your WhatsApp number: "));
+        try {
+            console.log(chalk.hex("#800080").bold("Enter your WhatsApp number: "));
 
-        const phoneNumber = await question("");
+            const phoneNumber = await question("");
 
-        if (!phoneNumber?.trim()) {
-            console.log(chalk.red("Invalid number. Please try again."));
-            return;
+            if (!phoneNumber?.trim()) {
+                console.log(chalk.red("Invalid number. Please try again."));
+                return;
+            }
+
+            let code = await RaolLatestX.requestPairingCode(phoneNumber.trim());
+            code = code.match(/.{1,4}/g)?.join(" - ") || code;
+
+            console.log(chalk.hex("#800080").bold("Your Pairing Code :"), chalk.yellow.bold(code));
+        } catch (error) {
+            console.log(chalk.red("An error occurred while processing the number: " + error.message));
         }
-
-        let code = await RaolLatestX.requestPairingCode(phoneNumber.trim());
-        code = code.match(/.{1,4}/g)?.join(" - ") || code;
-
-        console.log(chalk.hex("#800080").bold("Your Pairing Code :"), chalk.yellow.bold(code));
-    } catch (error) {
-        console.log(chalk.red("An error occurred while processing the number: " + error.message));
     }
-}
-
+    
     //================= { WARNING } =================\\ 
     RaolLatestX.public = true
 
@@ -329,9 +327,7 @@ async function RaolLatestXStart() {
     }, {
         quoted
     });
-
-    RaolLatestX.public = true;
-
+    
     RaolLatestX.getName = (jid, withoutContact = false) => {
         id = RaolLatestX.decodeJid(jid)
         withoutContact = RaolLatestX.withoutContact || withoutContact
@@ -371,18 +367,24 @@ async function RaolLatestXStart() {
 
     RaolLatestX.serializeM = (m) => smsg(RaolLatestX, m, store);
 
-
     RaolLatestX.ev.on('connection.update', async (update) => {
         const {
             connection,
             lastDisconnect
-        } = update
+        } = update;
         try {
             if (connection === 'close') {
-                let reason = new Boom(lastDisconnect?.error)?.output.statusCode
+                let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
                 if (reason === DisconnectReason.badSession) {
-                    console.log(`Bad Session File, Please Delete Session and Scan Again`);
-                    RaolLatestX()
+                    console.log(chalk.red.bold(`🚨 Bad Session Detected! Deleting corrupted session files...`));
+                    const sessionDir = `./${global.sessionName}`;
+                    if (fs.existsSync(sessionDir)) {
+                        fs.rmdirSync(sessionDir, {
+                            recursive: true
+                        });
+                        console.log(chalk.green.bold(`🗑️ Session files deleted. Restarting in 5 seconds...`));
+                    }
+                    setTimeout(() => RaolLatestXStart(), 5000);
                 } else if (reason === DisconnectReason.connectionClosed) {
                     console.log("Connection closed, reconnecting....");
                     RaolLatestXStart();
@@ -391,7 +393,7 @@ async function RaolLatestXStart() {
                     RaolLatestXStart();
                 } else if (reason === DisconnectReason.connectionReplaced) {
                     console.log("Connection Replaced, Another New Session Opened, Please Close Current Session First");
-                    RaolLatestX()
+                    RaolLatestXStart();
                 } else if (reason === DisconnectReason.loggedOut) {
                     console.log(`Device Logged Out, Please Scan Again And Run.`);
                     RaolLatestXStart();
@@ -401,37 +403,27 @@ async function RaolLatestXStart() {
                 } else if (reason === DisconnectReason.timedOut) {
                     console.log("Connection TimedOut, Reconnecting...");
                     RaolLatestXStart();
-                } else RaolLatestX.end(`Unknown DisconnectReason: ${reason}|${connection}`)
+                } else RaolLatestX.end(`Unknown DisconnectReason: ${reason}|${connection}`);
             }
             if (update.connection == "connecting" || update.receivedPendingNotifications == "false") {
                 console.log(color(`📑 Connecting`, `${randomcolor3}`)) //Console-1
             }
-
+    
             if (update.connection == "open" || update.receivedPendingNotifications == "true") {
-
-                /*console.log(color(`${welcomeMessage}`,`${randomcolor}`)) //Console-3*/
                 console.log(color(`📑 Whatsapp Connection`, `${randomcolor}`))
                 console.log(color(`📑 Thank you for the supporters`))
                 await sleep(1000)
-
-                /*RaolLatestX.sendMessage('6282132710183@s.whatsapp.net', {
-                image: {
-                url: 'ttps://files.catbox.moe/k68d72.jpg'
-                }, 
-                caption: 'Menyalaa Abangkuuu🔥🔥'
-                })*/
-                await sleep(5000)
-                RaolLatestX.sendMessage('0@s.whatsapp.net', {
+    
+                await RaolLatestX.sendMessage('6283822021601@s.whatsapp.net', {
                     text: `*thank you for using this script😉*`
                 })
             }
-
+    
         } catch (err) {
             console.log('Error Di Connection.update ' + err);
-            RaolLatestXStart()
+            RaolLatestXStart();
         }
-
-    })
+    });
 
     RaolLatestX.ev.on('messages.update', async chatUpdate => {
         for (const {
