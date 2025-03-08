@@ -611,7 +611,7 @@ case "help": {
     const botStatus = RaolLatestX.public ? 'Public' : 'Self';
 
     await RaolLatestX.sendMessage(m.chat, {
-        video: { url: 'https://cloudkuimages.xyz/uploads/videos/67c5be2b7b19d.mp4' },
+        video: { url: 'https://files.catbox.moe/b568wr.mp4' },
         gifPlayback: true,
         caption: `Hello *${pushname}*, this is the bot menu!\n\n` +
                  `─ Time: *${ucapanWaktu}*\n` +
@@ -626,7 +626,7 @@ case "help": {
             isForwarded: true,
             forwardedNewsletterMessageInfo: {
                 newsletterName: `#RaolLatestX`,
-                newsletterJid: `120363378800202820@newsletter`,
+                newsletterJid: `120363395676155390@newsletter`,
             },
         },
         headerType: 1,
@@ -634,7 +634,7 @@ case "help": {
     }, { quoted: ftroli });
 
     await RaolLatestX.sendMessage(m.chat, {
-        audio: { url: 'https://cloudkuimages.xyz/uploads/audios/67c5c0cbc5fb9.mp3' },
+        audio: { url: 'https://files.catbox.moe/rgjgzu.mp3' },
         ptt: true,
         mimetype: 'audio/mpeg',
         contextInfo: {
@@ -643,7 +643,7 @@ case "help": {
             isForwarded: true,
             forwardedNewsletterMessageInfo: {
                 newsletterName: `#RaolLatestX`,
-                newsletterJid: `120363378800202820@newsletter`,
+                newsletterJid: `120363395676155390@newsletter`,
             },
         },
     }, { quoted: ftroli });
