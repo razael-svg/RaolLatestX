@@ -52,17 +52,13 @@ npm start
 
 ### 💻 **Contributors**  
 <div align="center">
-  <a href="https://github.com/Alifatahfauzi">
-    <img src="https://avatars.githubusercontent.com/u/118640580?v=4" width="120" style="border-radius:50%; margin:10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
-  </a>
-  <a href="https://github.com/latesturl">
-    <img src="https://avatars.githubusercontent.com/u/198647531?v=4" width="120" style="border-radius:50%; margin:10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
-  </a>
-</div>
 
-| **Fauzialifatah** | **Raol Mukarrozi** |
-|--------------------|---------------------|
-| 🛠️ Core Developer   | 🎨 System Architect |
+| **Photo** | **Name**              | **Role**                |
+|:---------:|:---------------------:|:-----------------------:|
+| <img src="https://avatars.githubusercontent.com/u/118640580?v=4" width="80" style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" /> | **Fauzialifatah**       | 🛠️ **Core Developer**    |
+| <img src="https://avatars.githubusercontent.com/u/198647531?v=4" width="80" style="border-radius:50%; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" /> | **Raol Mukarrozi**      | 🎨 **System Architect**  |
+
+</div>
 
 ---
 
