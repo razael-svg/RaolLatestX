@@ -1,57 +1,105 @@
-![RaolLatestX](https://cardivo.vercel.app/api?name=RaolLatestX&description=🎁Base%20WhatsApp%20bot%20type%20case%20and%20plugins%20(cjs)&image=https://files.catbox.moe/j7k8st.jpg&backgroundColor=%23ecf0f1&github=latesturl&pattern=leaf&colorPattern=%23eaeaea)
+![RaolLatestX Banner](https://cardivo.vercel.app/api?name=RaolLatestX&description=🎁Base%20WhatsApp%20bot%20type%20case%20and%20plugins%20(cjs)&image=https://files.catbox.moe/j7k8st.jpg&backgroundColor=%23ecf0f1&github=latesturl&pattern=leaf&colorPattern=%23eaeaea)
 
-#### **1. Login Required:**
-```javascript
--------------------------
-🔒 LOGIN SCRIPT RaolLatestX
-🔑 USERNAME: admin
-🔑 PASSWORD: admin123
--------------------------
+```ascii
+ _____ _____ _____ _____ _____ _____ _____ 
+|_____|_____|_____|_____|_____|_____|_____|
+  🔥  RaolLatestX v1.0.0 - WhatsApp Bot  
+|_____|_____|_____|_____|_____|_____|_____|
 ```
 
-**🎁 RaolLatestX | 1.0.0 | LatestURL**
+---
 
-```> Simple WhatsApp Bot Using Baileys Library```
-#### **2. Settings Section ( settings.js )**
+### 🔒 **Login Authentication**  
 ```javascript
-//============ { SETTINGS } ============\\
-global.prefa = ['', '!', '.', ',', '🐤', '🗿']; // An array of prefixes that can be used to trigger commands (e.g., `!`, `.`, `,`).
-global.owner = ''; // A placeholder for the bot owner's information (e.g., name or ID).
-global.email = 'latesturltech@gmail.com'; // The email address associated with the bot or owner.
-global.ownNumb = ''; // A placeholder for the owner's phone number.
-global.NamaOwner = ''; // A placeholder for the owner's name.
-global.sessionName = 'session'; // The name of the session file (used for authentication or state management).
-global.namabot = 'RaolLatestX'; // The name of the bot (`RaolLatestX` in this case).
-global.author = ''; // A placeholder for the author's name.
-global.packname = ''; // A placeholder for the package name (e.g., for stickers or other media).
-global.yt = ''; // A placeholder for a YouTube link or channel.
+      🔑 USERNAME: admin  
+      🔑 PASSWORD: admin123  
 ```
-### How to install/run
-1. Clone the repository to your local machine:
-   ```bash
-   git clone https://github.com/latesturl/RaolLatestX.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd RaolLatestX
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Modify the `settings.js` file to configure your bot.
-5. Start the server:
-   ```bash
-   npm start
-   ```
 
-#### **All Contributors**
-<a href="https://github.com/Alifatahfauzi"><img src="https://avatars.githubusercontent.com/u/118640580?v=4?size=100" width="100" height="100"></a> | <a href="https://github.com/latesturl"><img src="https://avatars.githubusercontent.com/u/198647531?v=4?size=100" width="100" height="100"></a>
----|---
-[Fauzialifatah](https://github.com/Alifatahfauzi/) | [Raol Mukarrozi](https://github.com/latesturl/)  
-Owner | Recode
+---
 
-#### **Source Login Required:**
-[![DBRaolLatestX](https://github-readme-stats.vercel.app/api/pin/?username=latesturl&repo=DBRaolLatestX&show_owner=true&theme=dark)](https://github.com/latesturl/dbRaolLatestX)
+### ⚙️ **Core Configuration** (`settings.js`)  
+```javascript
+//============ { SYSTEM SETTINGS } ============\\
+global.prefa = ['!', '.', ',', '🐤', '🗿']; // 🎨 Custom prefixes
+global.owner = 'YourName'; // 👤 Owner identity
+global.email = 'latesturltech@gmail.com'; // 📧 Contact
+global.namabot = 'RaolLatestX'; // 🤖 Bot name
+global.sessionName = 'session'; // 📄 Session file
+// 🚨 Fill these fields before deployment!
+global.ownNumb = ''; // 📱 Owner number
+global.packname = ''; // 🎨 Sticker pack
+global.yt = ''; // 🎥 YouTube channel
+```
 
-**© 2025 LatestURL. All rights reserved**
+---
+
+### 🚀 **Quick Setup Guide**  
+```bash
+# 1️ Clone repository
+git clone https://github.com/latesturl/RaolLatestX.git
+
+# 2️⃣ Install dependencies ⚙️
+npm install
+
+# 3️⃣ Configure settings 🔧
+nano settings.js
+
+# 4️⃣ Start the bot 
+npm start
+```
+
+---
+
+### 💻 **Contributors**  
+<div align="center">
+  <a href="https://github.com/Alifatahfauzi">
+    <img src="https://avatars.githubusercontent.com/u/118640580?v=4" width="120" style="border-radius:50%; margin:10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
+  </a>
+  <a href="https://github.com/latesturl">
+    <img src="https://avatars.githubusercontent.com/u/198647531?v=4" width="120" style="border-radius:50%; margin:10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" />
+  </a>
+</div>
+
+| **Fauzialifatah** | **Raol Mukarrozi** |
+|--------------------|---------------------|
+| 🛠️ Core Developer   | 🎨 System Architect |
+
+---
+
+### 📦 **Database Integration**  
+[![DB Status](https://github-readme-stats.vercel.app/api/pin/?username=latesturl&repo=DBRaolLatestX&show_owner=true&theme=radical)](https://github.com/latesturl/dbRaolLatestX)
+
+---
+
+### ⚠️ **Security Notice**  
+```diff
+- NEVER SHARE YOUR SESSION FILE! 
++ Use environment variables for sensitive data
+```
+
+---
+
+<footer align="center">
+<a href="https://github.com/latesturl" target="_blank" rel="noopener noreferrer">
+<img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Repository" />
+</a>
+<p>© 2025 LatestURL • All rights reserved 🛡️</p>
+</footer>
+
+---
+
+### 📌 **Key Features**  
+✅ Modular plugin system (CJS)  
+✅ Multi-prefix support  
+✅ Lightweight & optimized  
+✅ Easy to customize  
+
+✨ **Now with:**  
+- Dynamic command loading  
+- Session persistence  
+- Error handling system  
+- Auto-reconnect feature  
+
+---
+
+**Let's build something awesome!** 🚀 WhatsApp Bot made simple with RaolLatestX.
