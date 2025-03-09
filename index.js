@@ -105,7 +105,9 @@ const now = moment().tz("Asia/Jakarta");
 const time = now.format("HH:mm:ss");
 let ucapanWaktu;
 
-if (time < "06:00:00") {
+if (time < "03:00:00") {
+    ucapanWaktu = "Selamat Malam🌃";
+} else if (time < "06:00:00") {
     ucapanWaktu = "Selamat Subuh🌆";
 } else if (time < "11:00:00") {
     ucapanWaktu = "Selamat Pagi🏙️";
@@ -133,7 +135,6 @@ const randomcolor3 = listcolor[Math.floor(Math.random() * listcolor.length)];
 const randomcolor4 = listcolor[Math.floor(Math.random() * listcolor.length)];
 const randomcolor5 = listcolor[Math.floor(Math.random() * listcolor.length)];
 
-
 //================= { CONSOLE DISPLAY } =================\\
 const welcomeMessage = `
 👋 Hii, I Am ${global.namabot}
@@ -141,6 +142,7 @@ ${ucapanWaktu}
 Session        : ${global.sessionName}
 Waktu    : ${ucapanWaktu}
 `;
+
 //================= { PAIRING } =================\\
 async function keyoptions(url, options) {
     try {
@@ -243,11 +245,8 @@ async function handleLogin() {
 async function RaolLatestXStart() {
     const isLoggedIn = await handleLogin();
     if (!isLoggedIn) return;
-    
-    const {
-        state,
-        saveCreds
-    } = await useMultiFileAuthState(`./${global.sessionName}`);
+
+    const { state, saveCreds } = await useMultiFileAuthState(`./${global.sessionName}`);
 
     const RaolLatestX = makeWASocket({
         connectTimeoutMs: 60000,
@@ -262,29 +261,29 @@ async function RaolLatestXStart() {
         printQRInTerminal: !usePairingCode,
         auth: state,
         version: [2, 3000, 1017531287],
-        browser: ["Ubuntu", "Chrome", "20.0.04"]
+        browser: ["Ubuntu", "Firefox", "120.0"]
     });
 
     if (usePairingCode && !RaolLatestX.authState.creds.registered) {
-    try {
-        console.log(chalk.hex("#800080").bold("Enter your WhatsApp number: "));
+        try {
+            console.log(chalk.hex("#800080").bold("Enter your WhatsApp number: "));
 
-        const phoneNumber = await question("");
+            const phoneNumber = await question("");
 
-        if (!phoneNumber?.trim()) {
-            console.log(chalk.red("Invalid number. Please try again."));
-            return;
+            if (!phoneNumber?.trim()) {
+                console.log(chalk.red("Invalid number. Please try again."));
+                return;
+            }
+
+            let code = await RaolLatestX.requestPairingCode(phoneNumber.trim());
+            code = code.match(/.{1,4}/g)?.join(" - ") || code;
+
+            console.log(chalk.hex("#800080").bold("Your Pairing Code :"), chalk.yellow.bold(code));
+        } catch (error) {
+            console.log(chalk.red("An error occurred while processing the number: " + error.message));
         }
-
-        let code = await RaolLatestX.requestPairingCode(phoneNumber.trim());
-        code = code.match(/.{1,4}/g)?.join(" - ") || code;
-
-        console.log(chalk.hex("#800080").bold("Your Pairing Code :"), chalk.yellow.bold(code));
-    } catch (error) {
-        console.log(chalk.red("An error occurred while processing the number: " + error.message));
     }
-}
-
+    
     //================= { WARNING } =================\\ 
     RaolLatestX.public = true
 
@@ -329,9 +328,7 @@ async function RaolLatestXStart() {
     }, {
         quoted
     });
-
-    RaolLatestX.public = true;
-
+    
     RaolLatestX.getName = (jid, withoutContact = false) => {
         id = RaolLatestX.decodeJid(jid)
         withoutContact = RaolLatestX.withoutContact || withoutContact
@@ -371,18 +368,27 @@ async function RaolLatestXStart() {
 
     RaolLatestX.serializeM = (m) => smsg(RaolLatestX, m, store);
 
-
     RaolLatestX.ev.on('connection.update', async (update) => {
         const {
             connection,
             lastDisconnect
-        } = update
+        } = update;
         try {
             if (connection === 'close') {
-                let reason = new Boom(lastDisconnect?.error)?.output.statusCode
+                let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
                 if (reason === DisconnectReason.badSession) {
-                    console.log(`Bad Session File, Please Delete Session and Scan Again`);
-                    RaolLatestX()
+                    console.log(chalk.red.bold(`🚨 Bad Session Detected! Deleting corrupted session files...`));
+                    const sessionDir = `./${global.sessionName}`;
+                    if (fs.existsSync(sessionDir)) {
+                        fs.rm(sessionDir, { recursive: true }, (err) => {
+                            if (err) {
+                                console.error(chalk.red.bold(`❌ Error deleting session files: ${err}`));
+                            } else {
+                                console.log(chalk.green.bold(`🗑️ Session files deleted. Restarting in 5 seconds...`));
+                            }
+                        });
+                    }
+                    setTimeout(() => RaolLatestXStart(), 5000);
                 } else if (reason === DisconnectReason.connectionClosed) {
                     console.log("Connection closed, reconnecting....");
                     RaolLatestXStart();
@@ -391,7 +397,7 @@ async function RaolLatestXStart() {
                     RaolLatestXStart();
                 } else if (reason === DisconnectReason.connectionReplaced) {
                     console.log("Connection Replaced, Another New Session Opened, Please Close Current Session First");
-                    RaolLatestX()
+                    RaolLatestXStart();
                 } else if (reason === DisconnectReason.loggedOut) {
                     console.log(`Device Logged Out, Please Scan Again And Run.`);
                     RaolLatestXStart();
@@ -401,37 +407,31 @@ async function RaolLatestXStart() {
                 } else if (reason === DisconnectReason.timedOut) {
                     console.log("Connection TimedOut, Reconnecting...");
                     RaolLatestXStart();
-                } else RaolLatestX.end(`Unknown DisconnectReason: ${reason}|${connection}`)
+                } else {
+                    RaolLatestX.end(`Unknown DisconnectReason: ${reason}|${connection}`);
+                }
             }
-            if (update.connection == "connecting" || update.receivedPendingNotifications == "false") {
-                console.log(color(`📑 Connecting`, `${randomcolor3}`)) //Console-1
+            if (update.connection === "connecting" || update.receivedPendingNotifications === "false") {
+                console.log(color(`📑 Connecting`, `${randomcolor3}`));
             }
 
-            if (update.connection == "open" || update.receivedPendingNotifications == "true") {
+            if (update.connection === "open" || update.receivedPendingNotifications === "true") {
+                console.log(color(`📑 Whatsapp Connection`, `${randomcolor}`));
+                console.log(color(`📑 Thank you for the supporters`));
+                await sleep(1000);
 
-                /*console.log(color(`${welcomeMessage}`,`${randomcolor}`)) //Console-3*/
-                console.log(color(`📑 Whatsapp Connection`, `${randomcolor}`))
-                console.log(color(`📑 Thank you for the supporters`))
-                await sleep(1000)
-
-                /*RaolLatestX.sendMessage('6282132710183@s.whatsapp.net', {
-                image: {
-                url: 'ttps://files.catbox.moe/k68d72.jpg'
-                }, 
-                caption: 'Menyalaa Abangkuuu🔥🔥'
-                })*/
-                await sleep(5000)
-                RaolLatestX.sendMessage('0@s.whatsapp.net', {
+                await RaolLatestX.sendMessage('0@s.whatsapp.net', {
                     text: `*thank you for using this script😉*`
-                })
+                });
+
+                autoClearSession();
             }
 
         } catch (err) {
             console.log('Error Di Connection.update ' + err);
-            RaolLatestXStart()
+            RaolLatestXStart();
         }
-
-    })
+    });
 
     RaolLatestX.ev.on('messages.update', async chatUpdate => {
         for (const {
@@ -812,13 +812,114 @@ async function RaolLatestXStart() {
 
     return RaolLatestX
 }
-//================= { WHATSAPP START } =================\\
+//========= { WHATSAPP START } =========\\
 RaolLatestXStart();
+//========= { AUTO CLEAN SESSION } =========\\
+function clearSessionFiles(isShutdown = false) {
+    const sessionDir = `./${global.sessionName}`;
 
+    try {
+        if (!fs.existsSync(sessionDir)) {
+            console.log(chalk.blue.bold('📂 [AUTO CLEAN] Session directory does not exist. Skipping cleanup.'));
+            return;
+        }
+
+        const files = fs.readdirSync(sessionDir);
+        if (files.length === 0) {
+            console.log(chalk.blue.bold('📂 [AUTO CLEAN] No session files to clean. Everything is tidy! 📑'));
+            return;
+        }
+
+        const filesToDelete = files.filter(file => 
+            file.startsWith('pre-key') ||
+            file.startsWith('sender-key') ||
+            file.startsWith('session-') ||
+            file.startsWith('app-state')
+        );
+
+        if (filesToDelete.length === 0) {
+            console.log(chalk.blue.bold('📂 [AUTO CLEAN] No session files to clean. Everything is tidy! 📑'));
+            return;
+        }
+
+        const logType = isShutdown ? 'SHUTDOWN CLEAN' : 'AUTO CLEAN';
+        console.log(chalk.yellow.bold(`📂 [${logType}] Found ${filesToDelete.length} session files to clean... 🗃️`));
+
+        filesToDelete.forEach(file => {
+            const filePath = path.join(sessionDir, file);
+            try {
+                fs.unlinkSync(filePath);
+                console.log(chalk.green.bold(`🗑️ Deleted: ${file}`));
+            } catch (error) {
+                console.error(chalk.red.bold(`❌ Failed to delete ${file}: ${error.message}`));
+            }
+        });
+
+        console.log(chalk.green.bold(`🗃️ [${logType}] Successfully removed ${filesToDelete.length} session files! 📂`));
+    } catch (error) {
+        console.error(chalk.red.bold(`📑 [${logType} ERROR]`), chalk.red.bold(error.message));
+    }
+}
+
+function autoClearSession() {
+    const clearInterval = 2 * 60 * 60 * 1000;
+    setInterval(() => clearSessionFiles(false), clearInterval);
+    console.log(chalk.yellow.bold(`🔄 [AUTO CLEAN] Auto clear session is running every 2 hours.`));
+}
+
+process.on('SIGINT', () => {
+    console.log(chalk.red.bold('\n🚨 [SHUTDOWN] Bot is shutting down...'));
+    clearSessionFiles(true);
+    process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+    console.log(chalk.red.bold('\n🚨 [SHUTDOWN] Bot is shutting down...'));
+    clearSessionFiles(true);
+    process.exit(0);
+});
+
+process.on('SIGTSTP', () => {
+    console.log(chalk.red.bold('\n🚨 [SHUTDOWN] Bot is shutting down...'));
+    clearSessionFiles(true);
+    process.exit(0);
+});
+
+process.on('beforeExit', () => {
+    console.log(chalk.red.bold('\n🚨 [SHUTDOWN] Bot is shutting down...'));
+    clearSessionFiles(true);
+});
+
+process.on('exit', () => {
+    console.log(chalk.red.bold('\n🚨 [SHUTDOWN] Bot is shutting down...'));
+    clearSessionFiles(true);
+});
+
+//========= { WARNING DO NOT DELETE THE CODE } =========\\
+const filePath = path.resolve(__dirname, 'index.js');
+
+function restartProcess() {
+    console.log(chalk.yellowBright('Restarting process due to file change...'));
+    const child = spawn(process.argv[0], process.argv.slice(1), {
+        detached: true,
+        stdio: 'inherit'
+    });
+    child.unref();
+    process.exit();
+}
+
+fs.watch(filePath, (eventType, filename) => {
+    if (eventType === 'change') {
+        console.log(chalk.yellowBright(`File ${filename} has been changed.`));
+        restartProcess();
+    }
+});
+
+//========= { FILE WATCHER } =========\\
 let file = require.resolve(__filename);
 fs.watchFile(file, () => {
     fs.unwatchFile(file);
-    console.log(chalk.yellowBright(`Update File Terbaru ${__filename}`));
+    console.log(chalk.yellowBright(`Latest File Update ${__filename}`));
     delete require.cache[file];
     require(file);
 });

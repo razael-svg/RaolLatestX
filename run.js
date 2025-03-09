@@ -1,6 +1,6 @@
 //================= { MODULE } =================\\
-require('./tmp/helpers/commandMenu')
-require('./settings')
+require('./tmp/helpers/commandMenu');
+require('./settings');
 const {
     smsg,
     getGroupAdmins,
@@ -28,8 +28,9 @@ const {
     getRandom,
     pickRandom,
     reSize
-} = require('./lib/myfunction')
-//================= { MODULE } =================\\
+} = require('./lib/myfunction');
+
+//================= { PREMIUM MODULE } =================\\
 const {
     addPremiumUser,
     getPremiumExpired,
@@ -37,8 +38,9 @@ const {
     expiredCheck,
     checkPremiumUser,
     getAllPremiumUser
-} = require('./lib/premium')
-//================= { MODULE } =================\\
+} = require('./lib/premium');
+
+//================= { BAILEYS MODULE } =================\\
 const {
     makeWASocket,
     downloadContentFromMessage,
@@ -108,7 +110,7 @@ const {
     fetchLatestBaileysVersion,
     useMultiFileAuthState,
     templateMessage
-} = require('@whiskeysockets/baileys')
+} = require('@whiskeysockets/baileys');
 //================= { MODULE } =================\\
 const axios = require('axios')
 const os = require('os')
@@ -228,20 +230,20 @@ module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
         //================= { TIME } =================\\
         const moment = require('moment-timezone')
         const time2 = moment().tz("Asia/Jakarta").format("HH:mm:ss")
-        if (time2 < "19:00:00") {
-            var ucapanWaktu = "Selamat Malam🌃"
-        }
-        if (time2 < "15:00:00") {
-            var ucapanWaktu = "Selamat Sore🌄"
-        }
-        if (time2 < "11:00:00") {
-            var ucapanWaktu = "Selamat Siang🏞️"
-        }
-        if (time2 < "06:00:00") {
-            var ucapanWaktu = "Selamat Pagi🏙️ "
-        }
-        if (time2 < "23:59:00") {
-            var ucapanWaktu = "Selamat Subuh🌆"
+        let ucapanWaktu;
+
+        if (time2 < "03:00:00") {
+            ucapanWaktu = "Selamat Malam🌃"
+        } else if (time2 < "06:00:00") {
+            ucapanWaktu = "Selamat Subuh🌆"
+        } else if (time2 < "11:00:00") {
+            ucapanWaktu = "Selamat Pagi🏙️"
+        } else if (time2 < "15:00:00") {
+            ucapanWaktu = "Selamat Siang🏞️"
+        } else if (time2 < "19:00:00") {
+            ucapanWaktu = "Selamat Sore🌄"
+        } else {
+            ucapanWaktu = "Selamat Malam🌃"
         }
         const wib = moment(Date.now()).tz("Asia/Jakarta").locale("id").format("HH:mm:ss z")
         const wita = moment(Date.now()).tz("Asia/Makassar").locale("id").format("HH:mm:ss z")
@@ -598,8 +600,55 @@ module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
 //================= { SWITCH CASE } =================\\
 switch (command) {
 //================= { MAIN COURSE } =================\\
+case "menu":
+case "help": {
+    RaolLatestX.sendMessage(m.chat, { react: { text: `${randomemoji}`, key: m.key } });
+    const owned = global.ownNumb + "@s.whatsapp.net";
 
+    const nodeVersion = process.version;
+    const packageJson = require('./package.json');
+    const baileysVersion = packageJson.dependencies['@whiskeysockets/baileys'] || packageJson.devDependencies['@whiskeysockets/baileys'];
+    const botStatus = RaolLatestX.public ? 'Public' : 'Self';
 
+    await RaolLatestX.sendMessage(m.chat, {
+        video: { url: 'https://files.catbox.moe/b568wr.mp4' },
+        gifPlayback: true,
+        caption: `Hello *${pushname}*, this is the bot menu!\n\n` +
+                 `─ Time: *${ucapanWaktu}*\n` +
+                 `─ Runtime: *${runtime(process.uptime())}*\n` +
+                 `─ Node.js: *${nodeVersion}*\n` +
+                 `─ Baileys: *${baileysVersion}*\n` +
+                 `─ Status: *${botStatus}*`,
+        footer: `Powered by LatestURL`,
+        contextInfo: {
+            mentionedJid: [m.sender, owned],
+            forwardingScore: 999,
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+                newsletterName: `#RaolLatestX`,
+                newsletterJid: `120363395676155390@newsletter`,
+            },
+        },
+        headerType: 1,
+        viewOnce: true
+    }, { quoted: ftroli });
+
+    await RaolLatestX.sendMessage(m.chat, {
+        audio: { url: 'https://files.catbox.moe/rgjgzu.mp3' },
+        ptt: true,
+        mimetype: 'audio/mpeg',
+        contextInfo: {
+            mentionedJid: [m.sender],
+            forwardingScore: 999,
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+                newsletterName: `#RaolLatestX`,
+                newsletterJid: `120363395676155390@newsletter`,
+            },
+        },
+    }, { quoted: ftroli });
+}
+break;
 //================= { MENU } =================\\
 
 //================= { MENU } =================\\
@@ -607,7 +656,7 @@ switch (command) {
 //================= { MENU } =================\\
 
 //================= { MENU } =================\\
-/*
+
 case 'public': {
     if (!isOwner) return;
     RaolLatestX.sendMessage(m.chat, {
@@ -633,7 +682,7 @@ case 'self': {
     m.reply('succes');
     break;
 }
-*/
+
 //================= { WARNING } =================\\
     default:
         if (budy.startsWith('=>')) {
@@ -683,41 +732,7 @@ case 'self': {
     }
 }
 
-//================= { AUTO CLEAR SESSION } =================\\
-function autoClearSession() {
-    const sessionDir = './session';
-    const clearInterval = 4 * 60 * 60 * 1000;
-    
-    setInterval(async () => {
-        try {
-            const files = fs.readdirSync(sessionDir);
-            const filteredFiles = files.filter(file => 
-                file.startsWith('pre-key') ||
-                file.startsWith('sender-key') ||
-                file.startsWith('session-') ||
-                file.startsWith('app-state')
-            );
-
-            if (filteredFiles.length === 0) {
-                console.log(chalk.blue.bold('📂 [AUTO CLEAN] No session files to clean. Everything is tidy! 📑'));
-                return;
-            }
-
-            console.log(chalk.yellow.bold('📂 [AUTO CLEAN] Starting session cleanup... 🗃️'));
-            
-            filteredFiles.forEach(file => {
-                fs.unlinkSync(path.join(sessionDir, file));
-            });
-
-            console.log(chalk.green.bold(`🗃️ [AUTO CLEAN] Successfully removed ${filteredFiles.length} session files! 📂`));
-        } catch (error) {
-            console.error(chalk.red.bold('📑 [AUTO CLEAN ERROR]'), chalk.red.bold(error));
-        }
-    }, clearInterval);
-}
-
-autoClearSession();
-
+//================= { FILE WATCHER } =================\\
 let file = require.resolve(__filename)
 require('fs').watchFile(file, () => {
     require('fs').unwatchFile(file)
