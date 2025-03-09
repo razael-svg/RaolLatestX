@@ -5,7 +5,7 @@ global.calender = d.toLocaleDateString("id");
 
 //================= { SETTINGS } =================\\
 global.prefa = ["."];
-global.owner = "Razael";
+global.owner = "6282225907841";
 global.email = "latesturltech@gmail.com";
 global.ownNumb = "6282225907841";
 global.NamaOwner = "Razael";
