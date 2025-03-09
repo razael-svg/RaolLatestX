@@ -105,7 +105,9 @@ const now = moment().tz("Asia/Jakarta");
 const time = now.format("HH:mm:ss");
 let ucapanWaktu;
 
-if (time < "06:00:00") {
+if (time < "03:00:00") {
+    ucapanWaktu = "Selamat Malam🌃";
+} else if (time < "06:00:00") {
     ucapanWaktu = "Selamat Subuh🌆";
 } else if (time < "11:00:00") {
     ucapanWaktu = "Selamat Pagi🏙️";

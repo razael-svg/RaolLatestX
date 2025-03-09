@@ -230,20 +230,20 @@ module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
         //================= { TIME } =================\\
         const moment = require('moment-timezone')
         const time2 = moment().tz("Asia/Jakarta").format("HH:mm:ss")
-        if (time2 < "19:00:00") {
-            var ucapanWaktu = "Selamat Malam🌃"
-        }
-        if (time2 < "15:00:00") {
-            var ucapanWaktu = "Selamat Sore🌄"
-        }
-        if (time2 < "11:00:00") {
-            var ucapanWaktu = "Selamat Siang🏞️"
-        }
-        if (time2 < "06:00:00") {
-            var ucapanWaktu = "Selamat Pagi🏙️ "
-        }
-        if (time2 < "23:59:00") {
-            var ucapanWaktu = "Selamat Subuh🌆"
+        let ucapanWaktu;
+
+        if (time2 < "03:00:00") {
+            ucapanWaktu = "Selamat Malam🌃"
+        } else if (time2 < "06:00:00") {
+            ucapanWaktu = "Selamat Subuh🌆"
+        } else if (time2 < "11:00:00") {
+            ucapanWaktu = "Selamat Pagi🏙️"
+        } else if (time2 < "15:00:00") {
+            ucapanWaktu = "Selamat Siang🏞️"
+        } else if (time2 < "19:00:00") {
+            ucapanWaktu = "Selamat Sore🌄"
+        } else {
+            ucapanWaktu = "Selamat Malam🌃"
         }
         const wib = moment(Date.now()).tz("Asia/Jakarta").locale("id").format("HH:mm:ss z")
         const wita = moment(Date.now()).tz("Asia/Makassar").locale("id").format("HH:mm:ss z")
