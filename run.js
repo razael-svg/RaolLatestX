@@ -176,6 +176,7 @@ module.exports = RaolLatestX = async (RaolLatestX, m, chatUpdate, store) => {
             (m.mtype === 'buttonsResponseMessage') ? m.message?.buttonsResponseMessage?.selectedButtonId :
             (m.mtype === 'listResponseMessage') ? m.message?.listResponseMessage?.singleSelectReply?.selectedRowId :
             (m.mtype === 'templateButtonReplyMessage') ? m.message?.templateButtonReplyMessage?.selectedId :
+            (m.mtype === 'interactiveResponseMessage') ? JSON.parse(m.message.interactiveResponseMessage.nativeFlowResponseMessage.paramsJson).id :
             (m.mtype === 'messageContextInfo') ? (
                 m.message?.buttonsResponseMessage?.selectedButtonId ||
                 m.message?.listResponseMessage?.singleSelectReply?.selectedRowId ||
@@ -656,7 +657,6 @@ break;
 //================= { MENU } =================\\
 
 //================= { MENU } =================\\
-
 case 'public': {
     if (!isOwner) return;
     RaolLatestX.sendMessage(m.chat, {
